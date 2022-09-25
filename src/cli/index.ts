@@ -1,5 +1,5 @@
-import { exec } from 'child_process'
 import { readdirSync } from 'fs'
+import chalk from 'chalk';
 import readline from 'readline';
 
 // run an action, select run mode, select block number, or run latest
@@ -32,22 +32,22 @@ const parseAndRunAction = async function (dir: string[], action: string, mode: s
 }
 
 const main = async function () {
-  console.log('Executing Excavate Action Runner..\n')
+  console.log(chalk.yellow('Executing Excavate Runner..\n'))
   const actionsDir = getAvailableActions()
-  console.log('List of actions available are: \n')
+  console.log(chalk.yellow('List of actions available are: \n'))
   actionsDir.map((dir) => {
-    console.log(dir, '\n')
+    console.log(chalk.green(dir), '\n')
   })
-  rl.question("Which action do you want to run? \n", function(action) {
-    rl.question("In what mode do you want to run? \n available modes are: Dry and Live \n", async function(mode) {
-        console.log(`running ${action} in ${mode} \n`);
+  rl.question(chalk.yellow("Which action do you want to run? \n"), function(action) {
+    rl.question("In what mode do you want to run? available modes are: \n Dry \n Live \n", async function(mode) {
+        console.log(chalk.yellow(`running ${action} in ${mode} mode \n`));
         await parseAndRunAction(actionsDir, action, mode)
         rl.close();
     });
   });
 
   rl.on("close", function() {
-      console.log("action executed \n");
+      console.log(chalk.yellow("action executed \n"));
       process.exit(0);
   });
 
